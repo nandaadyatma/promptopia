@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "@node_modules/next/navigation";
 
 import Form from "@components/Form";
+
+import React from "react";
 
 const UpdatePrompt = () => {
   const router = useRouter();
@@ -25,12 +27,12 @@ const UpdatePrompt = () => {
 
       setPost({
         prompt: data.prompt,
-        tag: data.tag
+        tag: data.tag,
       });
     };
 
-    if(promptId) {
-        getPromptDetails();
+    if (promptId) {
+      getPromptDetails();
     }
   }, [promptId]);
 
@@ -40,8 +42,8 @@ const UpdatePrompt = () => {
     // it is used to prevent the default behavior of the form when the form is submitted (e.g. page refresh)
     setSubmitting(true);
 
-    if(!promptId) {
-      return alert("Prompt ID is not found")
+    if (!promptId) {
+      return alert("Prompt ID is not found");
     }
 
     try {
@@ -74,4 +76,14 @@ const UpdatePrompt = () => {
   );
 };
 
-export default UpdatePrompt;
+const Page = () => {
+  return (
+    <div>
+      <Suspense>
+        <UpdatePrompt />
+      </Suspense>
+    </div>
+  );
+};
+
+export default Page;
